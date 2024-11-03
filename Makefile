@@ -142,11 +142,7 @@ endif
 
 ifeq ($(BUILD_ENV), development)
 CFLAGS += -DDO_NOT_USE_M365_BOOTLOADER
-# link script
-LDSCRIPT = STM32F103C8Tx_FLASH-development.ld
 else
-# link script
-LDSCRIPT = STM32F103C8Tx_FLASH.ld
 endif
 
 # Generate dependency information
@@ -156,6 +152,8 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 #######################################
 # LDFLAGS
 #######################################
+# link script
+LDSCRIPT = STM32F103C8Tx_FLASH.ld
 
 # libraries
 LIBS = -lc -lm -lnosys -larm_cortexM3l_math
