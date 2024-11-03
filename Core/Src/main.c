@@ -172,7 +172,7 @@ q31_t q31_rotorposition_hall;
 
 q31_t q31_rotorposition_PLL = 0;
 q31_t q31_angle_per_tic = 0;
-q31_t q31_PLL_error=0;
+
 q31_t q31_u_d_temp = 0;
 q31_t q31_u_q_temp = 0;
 int16_t i16_sinus = 0;
@@ -1455,7 +1455,7 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc) {
 				q31_rotorposition_PLL += q31_angle_per_tic;
 			}
 			if (ui16_tim2_recent < ui16_timertics+(ui16_timertics>>2) && !ui8_overflow_flag && !ui8_6step_flag) { //prevent angle running away at standstill
-				if(MS.angle_est&&abs(q31_PLL_error)<deg_30){
+				if(MS.angle_est){
 					q31_rotorposition_absolute=q31_rotorposition_PLL;
 					MS.system_state=PLL;
 				}
@@ -1609,7 +1609,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		} // end case
 
 		if(MS.angle_est){
-			q31_PLL_error=q31_rotorposition_PLL-q31_rotorposition_hall;
 			q31_angle_per_tic = speed_PLL(q31_rotorposition_PLL,q31_rotorposition_hall);
 		}
 
