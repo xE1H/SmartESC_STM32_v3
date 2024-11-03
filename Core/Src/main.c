@@ -1542,67 +1542,67 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		case 64:
 			q31_rotorposition_hall = Hall_64;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			uint16_full_rotation_counter = 0;
 			break;
 		case 45:
 			q31_rotorposition_hall = Hall_45;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			break;
 		case 51:
 			q31_rotorposition_hall = Hall_51;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			break;
 		case 13:
 			q31_rotorposition_hall = Hall_13;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			uint16_half_rotation_counter = 0;
 			break;
 		case 32:
 			q31_rotorposition_hall = Hall_32;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			break;
 		case 26:
 			q31_rotorposition_hall = Hall_26;
 
-			i8_recent_rotor_direction = -i16_hall_order;
+			i8_recent_rotor_direction = i16_hall_order;
 			break;
 
 			//6 cases for reverse direction
 		case 46:
 			q31_rotorposition_hall = Hall_64;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			break;
 		case 62:
 			q31_rotorposition_hall = Hall_26;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			break;
 		case 23:
 			q31_rotorposition_hall = Hall_32;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			uint16_half_rotation_counter = 0;
 			break;
 		case 31:
 			q31_rotorposition_hall = Hall_13;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			break;
 		case 15:
 			q31_rotorposition_hall = Hall_51;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			break;
 		case 54:
 			q31_rotorposition_hall = Hall_45;
 
-			i8_recent_rotor_direction = i16_hall_order;
+			i8_recent_rotor_direction = -i16_hall_order;
 			uint16_full_rotation_counter = 0;
 			break;
 
