@@ -43,28 +43,28 @@
 #define BRAKEMAX 190
 
 // parameters for speed calculation
-#define WHEEL_CIRCUMFERENCE 550 //690 for original M365 motor
-#define GEAR_RATIO 11 //15 for original M365 motor
+#define WHEEL_CIRCUMFERENCE 2302 //690 for original M365 motor
+#define GEAR_RATIO 45 //15 for original M365 motor
 
 // speed limits for invividual modes in kph
-#define SPEEDLIMIT_ECO 6
-#define SPEEDLIMIT_NORMAL 20
-#define SPEEDLIMIT_SPORT 50
+#define SPEEDLIMIT_ECO 60
+#define SPEEDLIMIT_NORMAL 200
+#define SPEEDLIMIT_SPORT 500
 
 // motor current limits for invividual modes in mA
-#define PH_CURRENT_MAX_ECO 5000
-#define PH_CURRENT_MAX_NORMAL 9000
-#define PH_CURRENT_MAX_SPORT 14000
+#define PH_CURRENT_MAX_ECO 25000
+#define PH_CURRENT_MAX_NORMAL 25000
+#define PH_CURRENT_MAX_SPORT 25000
 
 // motor current limit for regen in mA
 #define REGEN_CURRENT 20000
 
 // maximum current for flux weakening in mA
-#define FW_CURRENT_MAX 18000 //max id
+#define FW_CURRENT_MAX 20000 //max id
 
 // maximum battery currents in mA
-#define BATTERYCURRENT_MAX 8000
-#define REGEN_CURRENT_MAX 10000
+#define BATTERYCURRENT_MAX 20000
+#define REGEN_CURRENT_MAX 1000
 
 // battery voltage limits in mV
 #define BATTERYVOLTAGE_MIN 33000
