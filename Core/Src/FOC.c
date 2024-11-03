@@ -49,7 +49,7 @@ void svpwm(q31_t q31_u_alpha, q31_t q31_u_beta);
 void FOC_calculation(int16_t int16_i_as, int16_t int16_i_bs, q31_t q31_teta,
 		 MotorState_t *MS_FOC) {
 	// iNVERT SINCE MOTOR IS RUNNING BACKWARDS THAN EXPECTED
-	q31_teta = -q31_teta;
+	//q31_teta = -q31_teta;
 	
 	HAL_GPIO_WritePin(UART1_Tx_GPIO_Port, UART1_Tx_Pin, GPIO_PIN_SET);
 	q31_t q31_i_alpha = 0;
