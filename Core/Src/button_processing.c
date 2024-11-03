@@ -46,12 +46,11 @@ uint8_t buttonState() {
   return buttonstate;
 }
 
-// NOTE: VERY_LONG_PRESS will only happen if brake is also pressed (to avoid user mistake with LONG_PRESS)
-eButtonEvent getButtonEvent(M365State_t *p_M365State)
+eButtonEvent getButtonEvent()
 {
   static const uint32_t DOUBLE_GAP_MILLIS_MAX     = 250;
   static const uint32_t SINGLE_PRESS_MILLIS_MAX 	= 800;
-  static const uint32_t VERY_LONG_PRESS_MILLIS_MAX 	  = 5000;
+  static const uint32_t LONG_PRESS_MILLIS_MAX 	  = 5000;
 
   static uint32_t button_down_ts = 0;
   static uint32_t button_up_ts = 0;
@@ -79,13 +78,10 @@ eButtonEvent getButtonEvent(M365State_t *p_M365State)
   if (!button_down && double_pending && now - button_up_ts > DOUBLE_GAP_MILLIS_MAX) {
     double_pending = false;
     button_event = SINGLE_PRESS;
-	} else if (button_down &&
-    (now - button_down_ts >= SINGLE_PRESS_MILLIS_MAX) && // if time over single press
-      ((now - button_down_ts <= VERY_LONG_PRESS_MILLIS_MAX) || // if time lower than very long press OR brake is not pressed
-      p_M365State->brake_active == false)) {
+	} else if (button_down && now - button_down_ts >= SINGLE_PRESS_MILLIS_MAX && now - button_down_ts <= LONG_PRESS_MILLIS_MAX) {
     double_pending = false;
     button_event = LONG_PRESS;
-  } else if (button_down && now - button_down_ts > VERY_LONG_PRESS_MILLIS_MAX) {
+  } else if (button_down && now - button_down_ts > LONG_PRESS_MILLIS_MAX) {
     double_pending = false;
     button_event = VERY_LONG_PRESS;
   }
@@ -104,7 +100,7 @@ void checkButton(M365State_t *p_M365State) {
 
   counter++;
   if ((counter % 2) == 0) { // every 20ms
-    switch (getButtonEvent(p_M365State)) {
+    switch (getButtonEvent()) {
       case NO_PRESS:
         break;
 

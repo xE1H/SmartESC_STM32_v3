@@ -281,7 +281,7 @@ int main(void) {
 
   M365State.phase_current_limit = PH_CURRENT_MAX_NORMAL;
   M365State.speed_limit = SPEEDLIMIT_NORMAL;
-  M365State.regen_max_current = REGEN_MAX_CURRENT;
+  M365State.regen_current = REGEN_CURRENT;
 
   // init dashboard
 	M365Dashboard_init(huart1);
@@ -304,6 +304,18 @@ int main(void) {
 		if ((systick_cnt_old != systick_cnt) && // only at a change
         (systick_cnt % 20) == 0) { // every 20ms
       systick_cnt_old = systick_cnt;
+
+      #ifdef ADCTHROTTLE
+      // low pass filter torque signal
+      static uint32_t ui32_throttle_acc = 0;
+      uint16_t ui16_throttle;
+      ui32_throttle_acc -= ui32_throttle_acc >> 4;
+	    ui32_throttle_acc += MSPublic.adcData[ADC_THROTTLE];
+	    ui16_throttle = ui32_throttle_acc >> 4;
+
+      // map throttle to motor current
+      M365State.i_q_setpoint = map(ui16_throttle, THROTTLEOFFSET, THROTTLEMAX, 0, M365State.phase_current_limit);
+      #endif
 
       // process buttons
 		  checkButton(&M365State);

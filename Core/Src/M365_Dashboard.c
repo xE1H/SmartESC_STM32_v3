@@ -233,33 +233,27 @@ void process_DashboardMessage(M365State_t* p_M365State, uint8_t *message, uint8_
 			break;
 
 		case 0x65:
-			if (message[Brake] < (BRAKEOFFSET >> 1)) { // brake value is to much lower, there must be an error like brake is not connected
-        
+    
+			if (message[Brake] < (BRAKEOFFSET >> 1)) {
         p_M365State->error_state = brake;
-
-      } else if (p_M365State->error_state == brake) { // no brake error, remove it
-  
+      } else if(p_M365State->error_state == brake) {
         p_M365State->error_state = none;
       }
 
-      // calculate regen_current depending on the brake
-      int32_t regen_current = map(message[Brake], BRAKEOFFSET, BRAKEMAX, 0, p_M365State->regen_max_current);
-      
-      // if regen_current > 0 means we are braking 
-			if (regen_current > 0) {
+			if (map(message[Brake], BRAKEOFFSET, BRAKEMAX, 0, p_M365State->regen_current) > 0) {
 				if (p_M365State->speed > 2) {
 
+					p_M365State->i_q_setpoint_target = map(message[Brake], BRAKEOFFSET, BRAKEMAX, 0, p_M365State->regen_current);
+
           // ramp down regen strength at the max voltage to avoid the BMS shutting down the battery.
-          p_M365State->i_q_setpoint_target = -map(p_M365State->battery_voltage, BATTERYVOLTAGE_MAX - 1000, BATTERYVOLTAGE_MAX, regen_current, 0);
+          p_M365State->i_q_setpoint_target = -map(p_M365State->battery_voltage, BATTERYVOLTAGE_MAX - 1000, BATTERYVOLTAGE_MAX, p_M365State->i_q_setpoint_target, 0);
 
 					p_M365State->brake_active = true;
         } else {
           p_M365State->i_q_setpoint_target = 0;
-          p_M365State->brake_active = true;
+          p_M365State->brake_active = false;
 				}
-
-      } else { // we are not braking
-        // map throttle value to motor current
+      } else {
 				p_M365State->i_q_setpoint_target = map(message[Throttle], THROTTLEOFFSET, THROTTLEMAX, 0, p_M365State->phase_current_limit);
         p_M365State->brake_active = false;
       }
@@ -269,8 +263,8 @@ void process_DashboardMessage(M365State_t* p_M365State, uint8_t *message, uint8_
 			//55 AA 06 20 61 DA 0C 02 27 00 69 FE
 			//55 AA 0E 23 01 DA 48 FF 73 06 78 78 54 51 53 32 10 67 A2 FA
 
-			if(map(message[9],BRAKEOFFSET,BRAKEMAX,0,REGEN_MAX_CURRENT)>0){
-				if(p_M365State->speed > 2) p_M365State->i_q_setpoint_target = -map(message[9],BRAKEOFFSET,BRAKEMAX,0,REGEN_MAX_CURRENT);
+			if(map(message[9],BRAKEOFFSET,BRAKEMAX,0,REGEN_CURRENT)>0){
+				if(p_M365State->speed > 2) p_M365State->i_q_setpoint_target = -map(message[9],BRAKEOFFSET,BRAKEMAX,0,REGEN_CURRENT);
 				else p_M365State->i_q_setpoint_target = 0;
 				}
 			else{

@@ -21,7 +21,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "config.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
