@@ -21,6 +21,7 @@
 #define FIELD_WEAKNING_CURRENT_MAX 0 //max id
 
 // ADC channels
+//bombo
 #define ADC_VOLTAGE 0
 #define ADC_THROTTLE 1
 #define ADC_TEMP 2
