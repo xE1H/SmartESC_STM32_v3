@@ -10,21 +10,19 @@
 #   2015-07-22 - first version
 # ------------------------------------------------
 
-# uncomment next line to build the code for using the M365 bootloader
-#USE_M365_BOOTLOADER = 1
-
 ######################################
 # target
 ######################################
-TARGET = firmware
+TARGET = EBiCS_Firmware2
+
 
 ######################################
 # building variables
 ######################################
 # debug build?
 DEBUG = 1
-# max optimization: Os
-OPT = -Os # WARNING: be aware that motor control code will not work if there are no optimizations enabled, because of processing time will be to much!!
+# optimization
+OPT = -Os
 
 
 #######################################
@@ -38,12 +36,11 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
-Lib/EBiCS_motor_FOC/motor.c \
 Core/Src/main.c \
-Core/Src/utils.c \
+Core/Src/FOC.c \
 Core/Src/eeprom.c \
-Core/Src/decr_and_flash.c \
 Core/Src/button_processing.c \
+Core/Src/decr_and_flash.c \
 Core/Src/M365_Dashboard.c \
 Core/Src/stm32f1xx_it.c \
 Core/Src/print.c \
@@ -64,7 +61,7 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
-Src/system_stm32f1xx.c
+Src/system_stm32f1xx.c  
 
 # ASM sources
 ASM_SOURCES =  \
@@ -127,8 +124,7 @@ C_INCLUDES =  \
 -IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
 -IDrivers/CMSIS/Include \
--IDrivers/CMSIS/Include \
--ILib/EBiCS_motor_FOC/
+-IDrivers/CMSIS/Include
 
 
 # compile gcc flags
@@ -140,10 +136,6 @@ ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
 endif
 
-ifeq ($(BUILD_ENV), development)
-CFLAGS += -DDO_NOT_USE_M365_BOOTLOADER
-else
-endif
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -159,8 +151,6 @@ LDSCRIPT = STM32F103C8Tx_FLASH.ld
 LIBS = -lc -lm -lnosys -larm_cortexM3l_math
 LIBDIR = -LDrivers/CMSIS
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
-
-development: all
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
